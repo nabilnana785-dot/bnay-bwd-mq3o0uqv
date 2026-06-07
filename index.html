@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TokBoost | منصة زيادة متابعين وتفاعلات تيك توك الفورية</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Cairo', 'Plus Jakarta Sans', sans-serif;
+            background-color: #080710;
+        }
+        .neon-glow {
+            box-shadow: 0 0 15px rgba(254, 44, 85, 0.5);
+        }
+        .neon-text {
+            text-shadow: 0 0 10px rgba(254, 44, 85, 0.6);
+        }
+        .neon-glow-cyan {
+            box-shadow: 0 0 15px rgba(37, 244, 238, 0.5);
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        /* Hide all pages by default except home */
+        .spa-page { display: none; }
+        .spa-page.active { display: block; }
+    </style>
+</head>
+<body class="text-gray-200 min-h-screen flex flex-col justify-between overflow-x-hidden">
+
+    <div id="toast-container" class="fixed top-5 left-5 z-50 flex flex-col gap-3"></div>
+
+    <nav class="glass-panel sticky top-0 z-40 border-b border-gray-800 px-6 py-4 flex justify-between items-center navbar-glow">
+        <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('home')">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#fe2c55] to-[#25f4ee] flex items-center justify-center neon-glow">
+                <i class="fab fa-tiktok text-black text-xl"></i>
+            </div>
+            <span class="text-2xl font-black tracking-wider bg-gradient-to-r from-[#fe2c55] to-[#25f4ee] bg-clip-text text-transparent">TokBoost</span>
+        </div>
+        
+        <div class="hidden md:flex items-center gap-8 font-semibold">
+            <a href="#" onclick="navigateTo('home')" class="hover:text-[#fe2c55] transition-colors">الرئيسية</a>
+            <a href="#" onclick="navigateTo('dashboard')" class="hover:text-[#25f4ee] transition-colors">لوحة التحكم</a>
+            <a href="#" onclick="navigateTo('faq')" class="hover:text-gray-400 transition-colors">الأسئلة الشائعة</a>
+            <a href="#" onclick="navigateTo('contact')" class="hover:text-gray-400 transition-colors">تواصل معنا</a>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <button onclick="navigateTo('login')" id="nav-login-btn" class="px-5 py-2 rounded-full border border-gray-700 hover:border-[#fe2c55] transition-all text-sm font-bold">تسجيل الدخول</button>
+            <button onclick="navigateTo('register')" id="nav-register-btn" class="px-5 py-2 rounded-full bg-gradient-to-r from-[#fe2c55] to-[#ea284f] text-black font-bold text-sm shadow-lg hover:opacity-90 transition-all neon-glow">إنشاء حساب</button>
+            <div id="user-profile" class="hidden flex items-center gap-2">
+                <span id="user-display-name" class="text-sm text-gray-400"></span>
+                <button onclick="logout()" class="text-red-500 hover:text-red-400 p-2"><i class="fas fa-sign-out-alt"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow container mx-auto px-4 py-8">
+
+        <section id="page-home" class="spa-page active space-y-16 animate-fade-in">
+            <div class="text-center max-w-3xl mx-auto space-y-6 pt-10">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-red-500/10 border border-red-500/30 text-[#fe2c55] text-xs font-bold uppercase tracking-wider mb-2">
+                    <i class="fas fa-bolt animate-pulse"></i> خدمات فورية 100% بدون نقص
+                </div>
+                <h1 class="text-4xl md:text-6xl font-extrabold leading-tight">
+                    ضاعف تفاعل <span class="bg-gradient-to-r from-[#fe2c55] via-purple-500 to-[#25f4ee] bg-clip-text text-transparent neon-text">تيك توك</span> بلحظات واصعد للاكسبلور
+                </h1>
+                <p class="text-gray-400 text-lg md:text-xl font-light leading-relaxed">
+                    المنصة الذكية والأسرع عالمياً لتزويد المتابعين، اللايكات، المشاهدات، والحفظ بشكل آمن تماماً ومتوافق مع خوارزميات TikTok الحالية.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
+                <div class="glass-panel p-6 rounded-2xl text-center border-l-4 border-[#fe2c55]">
+                    <div class="text-3xl font-black text-white" id="stat-users">142,840</div>
+                    <div class="text-xs text-gray-400 mt-2">مستخدم نشط</div>
+                </div>
+                <div class="glass-panel p-6 rounded-2xl text-center border-l-4 border-[#25f4ee]">
+                    <div class="text-3xl font-black text-white" id="stat-orders">4,892,119</div>
+                    <div class="text-xs text-gray-400 mt-2">طلب مكتمل</div>
+                </div>
+                <div class="glass-panel p-6 rounded-2xl text-center border-l-4 border-purple-500">
+                    <div class="text-3xl font-black text-white" id="stat-speed">0.4s</div>
+                    <div class="text-xs text-gray-400 mt-2">سرعة التنفيذ البدئي</div>
+                </div>
+                <div class="glass-panel p-6 rounded-2xl text-center border-l-4 border-green-500">
+                    <div class="text-3xl font-black text-white">99.9%</div>
+                    <div class="text-xs text-gray-400 mt-2">معدل رضا الضمان</div>
+                </div>
+            </div>
+
+            <div class="max-w-2xl mx-auto glass-panel rounded-3xl p-6 md:p-8 relative overflow-hidden border border-gray-800 shadow-2xl">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#fe2c55] via-purple-500 to-[#25f4ee]"></div>
+                
+                <h2 class="text-2xl font-bold text-center mb-8 flex items-center justify-center gap-2">
+                    <i class="fas fa-magic text-[#fe2c55]"></i> لوحة تجهيز الطلب الفوري
+                </h2>
+
+                <form id="order-form" onsubmit="handleOrderSubmit(event)" class="space-y-6">
+                    <div class="space-y-2">
+                        <label class="block text-sm font-semibold text-gray-300">رابط الحساب أو الفيديو على تيك توك</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-500">
+                                <i class="fab fa-tiktok"></i>
+                            </span>
+                            <input type="url" id="tiktok-url" required placeholder="https://www.tiktok.com/@username أو رابط الفيديو..." 
+                                   class="w-full pl-4 pr-12 py-3.5 bg-black/40 border border-gray-800 rounded-xl focus:border-[#fe2c55] focus:ring-1 focus:ring-[#fe2c55] outline-none transition-all text-sm">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="block text-sm font-semibold text-gray-300">اختر نوع الخدمة المطلوبة</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div onclick="selectService('followers')" id="srv-followers" class="service-card cursor-pointer p-4 rounded-xl border border-gray-800 bg-black/20 hover:border-purple-500 transition-all text-center flex flex-col items-center gap-2">
+                                <i class="fas fa-user-plus text-xl text-purple-500"></i>
+                                <span class="text-sm font-bold">متابعين حقيقيين</span>
+                            </div>
+                            <div onclick="selectService('likes')" id="srv-likes" class="service-card cursor-pointer p-4 rounded-xl border border-gray-800 bg-black/20 hover:border-[#fe2c55] transition-all text-center flex flex-col items-center gap-2">
+                                <i class="fas fa-heart text-xl text-[#fe2c55]"></i>
+                                <span class="text-sm font-bold">إعجابات (Likes)</span>
+                            </div>
+                            <div onclick="selectService('views')" id="srv-views" class="service-card cursor-pointer p-4 rounded-xl border border-gray-800 bg-black/20 hover:border-[#25f4ee] transition-all text-center flex flex-col items-center gap-2">
+                                <i class="fas fa-eye text-xl text-[#25f4ee]"></i>
+                                <span class="text-sm font-bold">مشاهدات سريعة</span>
+                            </div>
+                            <div onclick="selectService('shares')" id="srv-shares" class="service-card cursor-pointer p-4 rounded-xl border border-gray-800 bg-black/20 hover:border-yellow-500 transition-all text-center flex flex-col items-center gap-2">
+                                <i class="fas fa-bookmark text-xl text-yellow-500"></i>
+                                <span class="text-sm font-bold">حفظ ومشاركات</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="block text-sm font-semibold text-gray-300">حدد العدد المطلوب إرساله</label>
+                        <select id="service-quantity" class="w-full px-4 py-3.5 bg-black/60 border border-gray-800 rounded-xl focus:border-[#25f4ee] outline-none text-sm text-gray-300">
+                            <option value="100">100 تفاعل (بدء فوري)</option>
+                            <option value="500">500 تفاعل (سرعة فائقة)</option>
+                            <option value="1000">1,000 تفاعل (موصى به للملفات الجديدة)</option>
+                            <option value="5000">5,000 تفاعل (حزمة الـ VIP)</option>
+                        </select>
+                    </div>
+
+                    <div class="p-4 bg-black/40 rounded-xl border border-gray-800 flex items-center justify-between">
+                        <div>
+                            <span class="block text-xs text-gray-400 mb-1">التحقق الأمني الذكي</span>
+                            <span id="captcha-question" class="text-sm font-bold tracking-wider text-[#25f4ee]"></span>
+                        </div>
+                        <input type="number" id="captcha-answer" required placeholder="الناتج؟" class="w-24 px-3 py-2 bg-black/80 border border-gray-700 rounded-lg text-center outline-none focus:border-[#fe2c55]">
+                    </div>
+
+                    <div id="cooldown-wrapper" class="hidden p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-center space-y-2">
+                        <p class="text-sm text-red-400 font-semibold"><i class="fas fa-clock animate-spin"></i> تم تفعيل نظام الحماية الذكي ضد السبام</p>
+                        <p class="text-xl font-mono font-black text-white tracking-widest" id="cooldown-timer">24:00:00</p>
+                        <p class="text-xs text-gray-400">يمكنك تقديم طلبك التالي مجاناً فور انتهاء العداد أعلاه.</p>
+                    </div>
+
+                    <button type="submit" id="btn-submit-order" class="w-full py-4 rounded-xl bg-gradient-to-r from-[#fe2c55] via-purple-600 to-[#25f4ee] text-black font-extrabold text-base tracking-wide hover:opacity-95 transition-all neon-glow flex items-center justify-center gap-2 shadow-lg">
+                        <span>START NOW</span> <i class="fas fa-paper-plane text-xs"></i>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <section id="page-dashboard" class="spa-page space-y-8 animate-fade-in">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h1 class="text-3xl font-bold text-white">لوحة التحكم والمراقبة الحية</h1>
+                    <p class="text-gray-400 text-sm mt-1">تحديث آني لإحصائيات الخوادم والطلبات القائمة عالمياً.</p>
+                </div>
+                <div class="flex items-center gap-2 bg-green-500/10 border border-green-500/30 text-green-400 px-4 py-2 rounded-xl text-xs font-semibold">
+                    <span class="w-2 h-2 rounded-full bg-green-500 animate-ping"></span> جميع خوادم الـ API تعمل بكفاءة قصوى
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="glass-panel p-5 rounded-2xl flex items-center justify-between">
+                    <div>
+                        <span class="text-xs text-gray-400 block">إجمالي طلباتك</span>
+                        <span class="text-2xl font-bold mt-1 block" id="db-total-orders">1</span>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500"><i class="fas fa-folder-open text-xl"></i></div>
+                </div>
+                <div class="glass-panel p-5 rounded-2xl flex items-center justify-between">
+                    <div>
+                        <span class="text-xs text-gray-400 block">الطلبات المكتملة</span>
+                        <span class="text-2xl font-bold mt-1 block text-green-400" id="db-completed-orders">1</span>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center text-green-500"><i class="fas fa-check-circle text-xl"></i></div>
+                </div>
+                <div class="glass-panel p-5 rounded-2xl flex items-center justify-between">
+                    <div>
+                        <span class="text-xs text-gray-400 block">طلبات قيد المعالجة</span>
+                        <span class="text-2xl font-bold mt-1 block text-yellow-500" id="db-pending-orders">0</span>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-yellow-500/10 flex items-center justify-center text-yellow-500"><i class="fas fa-spinner animate-spin text-xl"></i></div>
+                </div>
+                <div class="glass-panel p-5 rounded-2xl flex items-center justify-between">
+                    <div>
+                        <span class="text-xs text-gray-400 block">المستخدمين النشطين حالياً</span>
+                        <span class="text-2xl font-bold mt-1 block text-[#25f4ee]">4,192</span>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center text-[#25f4ee]"><i class="fas fa-users text-xl"></i></div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 glass-panel p-6 rounded-3xl">
+                    <h3 class="text-base font-bold mb-4"><i class="fas fa-chart-line text-[#fe2c55] mr-1"></i> مخطط بياني لحركة الطلبات (آخر 7 أيام)</h3>
+                    <div class="h-64">
+                        <canvas id="analyticsChart"></canvas>
+                    </div>
+                </div>
+                <div class="glass-panel p-6 rounded-3xl flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-base font-bold mb-4"><i class="fas fa-history text-[#25f4ee] mr-1"></i> أحدث العمليات على الشبكة</h3>
+                        <div class="space-y-3 text-xs" id="live-orders-log">
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="page-login" class="spa-page max-w-md mx-auto glass-panel p-8 rounded-3xl border border-gray-800 space-y-6 animate-fade-in">
+            <div class="text-center">
+                <h2 class="text-2xl font-bold">مرحباً بك مجدداً</h2>
+                <p class="text-xs text-gray-400 mt-1">سجل دخولك عبر بوابة Firebase الآمنة لإدارة عملياتك</p>
+            </div>
+            <form onsubmit="handleAuthSimulate(event, 'login')" class="space-y-4">
+                <div class="space-y-1">
+                    <label class="text-xs text-gray-400">البريد الإلكتروني</label>
+                    <input type="email" required placeholder="name@domain.com" class="w-full px-4 py-3 bg-black/40 border border-gray-800 rounded-xl outline-none focus:border-[#fe2c55] text-sm">
+                </div>
+                <div class="space-y-1">
+                    <label class="text-xs text-gray-400">كلمة المرور</label>
+                    <input type="password" required placeholder="••••••••" class="w-full px-4 py-3 bg-black/40 border border-gray-800 rounded-xl outline-none focus:border-[#fe2c55] text-sm">
+                </div>
+                <button type="submit" class="w-full py-3 rounded-xl bg-[#fe2c55] text-black font-bold text-sm tracking-wide shadow-md transition-all hover:opacity-90">تسجيل الدخول</button>
+            </form>
+            <div class="text-center text-xs text-gray-400">
+                ليس لديك حساب؟ <a href="#" onclick="navigateTo('register')" class="text-[#25f4ee] hover:underline">أنشئ حسابك الآن</a>
+            </div>
+        </section>
+
+        <section id="page-register" class="spa-page max-w-md mx-auto glass-panel p-8 rounded-3xl border border-gray-800 space-y-6 animate-fade-in">
+            <div class="text-center">
+                <h2 class="text-2xl font-bold">إنشاء حساب جديد</h2>
+                <p class="text-xs text-gray-400 mt-1">انضم لآلاف المؤثرين وصنّاع المحتوى الذكيين اليوم</p>
+            </div>
+            <form onsubmit="handleAuthSimulate(event, 'register')" class="space-y-4">
+                <div class="space-y-1">
+                    <label class="text-xs text-gray-400">اسم المستخدم بالكامل</label>
+                    <input type="text" id="reg-name" required placeholder="مثال: أحمد العتيبي" class="w-full px-4 py-3 bg-black/40 border border-gray-800 rounded-xl outline-none focus:border-[#25f4ee] text-sm">
+                </div>
+                <div class="space-y-1">
+                    <label class="text-xs text-gray-400">البريد الإلكتروني</label>
+                    <input type="email" required placeholder="name@domain.com" class="w-full px-4 py-3 bg-black/40 border border-gray-800 rounded-xl outline-none focus:border-[#25f4ee] text-sm">
+                </div>
+                <div class="space-y-1">
+                    <label class="text-xs text-gray-400">كلمة المرور</label>
+                    <input type="password" required placeholder="••••••••" class="w-full px-4 py-3 bg-black/40 border border-gray-800 rounded-xl outline-none focus:border-[#25f4ee] text-sm">
+                </div>
+                <div class="flex items-center gap-2 py-1">
+                    <input type="checkbox" required id="agree-terms" class="accent-[#25f4ee]">
+                    <label for="agree-terms" class="text-xs text-gray-400">أوافق بالكامل على شروط وسياسات الاستخدام الخاصة بالمنصة</label>
+                </div>
+                <button type="submit" class="w-full py-3 rounded-xl bg-[#25f4ee] text-black font-bold text-sm tracking-wide shadow-md transition-all hover:opacity-90 neon-glow-cyan">تسجيل واشتراك مجاني</button>
+            </form>
+            <div class="text-center text-xs text-gray-400">
+                لديك حساب بالفعل؟ <a href="#" onclick="navigateTo('login')" class="text-[#fe2c55] hover:underline">سجل دخولك</a>
+            </div>
+        </section>
+
+        <section id="page-faq" class="spa-page max-w-3xl mx-auto space-y-6 animate-fade-in">
+            <h2 class="text-3xl font-bold text-center mb-8">الأسئلة الشائعة والاستفسارات (FAQ)</h2>
+            <div class="space-y-4">
+                <div class="glass-panel p-5 rounded-2xl">
+                    <h4 class="font-bold text-base text-[#25f4ee] mb-2"><i class="far fa-question-circle ml-2"></i> هل هذه الخدمة آمنة على حسابي الشخصي؟</h4>
+                    <p class="text-xs text-gray-400 leading-relaxed">نعم بالكامل، خدماتنا تعتمد على تبادل تفاعلات حقيقية من شبكات توزيع آمنة ولا نطلب كلمات مرور حسابك نهائياً، مما يجعلها متوافقة مع إرشادات مجتمع TikTok.</p>
+                </div>
+                <div class="glass-panel p-5 rounded-2xl">
+                    <h4 class="font-bold text-base text-[#fe2c55] mb-2"><i class="far fa-question-circle ml-2"></i> كم يستغرق وصول الدعم إلى المقطع؟</h4>
+                    <p class="text-xs text-gray-400 leading-relaxed">يبدأ النظام بمعالجة طلبك خلال جزء من الثانية من ضغط "Start Now". تكتمل الحزم الصغيرة خلال دقيقة واحدة، والحزم الضخمة تدرج بشكل تدريجي طبيعي.</p>
+                </div>
+                <div class="glass-panel p-5 rounded-2xl">
+                    <h4 class="font-bold text-base text-purple-400 mb-2"><i class="far fa-question-circle ml-2"></i> لماذا يوجد عداد مهلة 24 ساعة؟</h4>
+                    <p class="text-xs text-gray-400 leading-relaxed">لحماية خوادم الـ API المفتوحة من عمليات السبام والأدوات الآلية الهجومية، مما يضمن كفاءة واستقرار الخدمة لجميع صناع المحتوى يومياً وبشكل عادل.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="page-contact" class="spa-page max-w-lg mx-auto glass-panel p-8 rounded-3xl border border-gray-800 space-y-6 animate-fade-in">
+            <div class="text-center">
+                <h2 class="text-2xl font-bold">مركز الدعم الفني والمراسلة</h2>
+                <p class="text-xs text-gray-400 mt-1">هل تواجه مشكلة تقنية؟ فريق السيرفرات 대기 جاهز لخدمتك 24/7</p>
+            </div>
+            <form onsubmit="handleContactSubmit(event)" class="space-y-4">
+                <div class="space-y-1">
+                    <label class="text-xs text-gray-400">الاسم الكامل</label>
+                    <input type="text" required placeholder="أدخل اسمك الكريم" class="w-full px-4 py-3 bg-black/40 border border-gray-800 rounded-xl outline-none focus:border-[#fe2c55] text-sm">
+                </div>
+                <div class="space-y-1">
+                    <label class="text-xs text-gray-400">عنوان الرسالة أو رقم طلبك</label>
+                    <input type="text" required placeholder="مثال: استفسار حول سرعة الإرسال" class="w-full px-4 py-3 bg-black/40 border border-gray-800 rounded-xl outline-none focus:border-[#fe2c55] text-sm">
+                </div>
+                <div class="space-y-1">
+                    <label class="text-xs text-gray-400">نص الرسالة بالتفصيل</label>
+                    <textarea rows="4" required placeholder="اكتب مشكلتك أو استفسارك هنا بكل وضوح..." class="w-full px-4 py-3 bg-black/40 border border-gray-800 rounded-xl outline-none focus:border-[#fe2c55] text-sm resize-none"></textarea>
+                </div>
+                <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-purple-600 to-[#fe2c55] text-white font-bold text-sm tracking-wide shadow-md transition-all hover:opacity-90">إرسال التذكرة للدعم</button>
+            </form>
+        </section>
+
+        <section id="page-terms" class="spa-page max-w-3xl mx-auto space-y-6 animate-fade-in text-justify">
+            <h2 class="text-3xl font-bold text-center mb-8">سياسة الاستخدام وشروط الخدمة</h2>
+            <div class="glass-panel p-6 rounded-2xl space-y-4 text-xs text-gray-400 leading-relaxed">
+                <h3 class="text-sm font-bold text-white">1. حدود المسؤولية والضوابط</h3>
+                <p>باستخدامك لمنصة TokBoost، فإنك تقر وتضمن التزامك التام بكافة القوانين المنظمة لمنصات التواصل الاجتماعي. التطبيق يوفر آليات محاكاة وبحوث اختبارية ولا يهدف لخرق خصوصية أو أنظمة أمان أي طرف ثالث.</p>
+                <h3 class="text-sm font-bold text-white">2. سياسة منع الاستغلال العادل</h3>
+                <p>يمنع منعاً باتاً تشغيل برمجيات الـ Bots أو الـ Scrapers الخبيثة على استمارات الـ Request الخاصة بنا. أي كشف لعمليات قرصنة سيعرض عنوان الـ IP والمسارات للخصم والحظر التلقائي الفوري من قاعدة بيانات Firebase و MongoDB الأمنية.</p>
+                <h3 class="text-sm font-bold text-white">3. تحديثات معايير التشفير والـ API</h3>
+                <p>يتم تحديث البنية التحتية البرمجية بشكل دوري لمواكبة خوارزميات الذكاء الاصطناعي وشبكات الحماية المرتبطة بقواعد سحابة Node.js و Express الحية.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="glass-panel border-t border-gray-800 py-6 text-center text-xs text-gray-500 space-y-3">
+        <div class="flex flex-wrap justify-center gap-6 font-medium text-gray-400">
+            <a href="#" onclick="navigateTo('terms')" class="hover:text-white transition-colors">سياسة الاستخدام</a>
+            <a href="#" onclick="navigateTo('faq')" class="hover:text-white transition-colors">الأسئلة الشائعة</a>
+            <a href="#" onclick="navigateTo('contact')" class="hover:text-white transition-colors">الدعم الفني</a>
+        </div>
+        <p dir="ltr">&copy; 2026 TokBoost Service. Powered by Node.js, React Framework & Firebase Edge Protection.</p>
+    </footer>
+
+    <script>
+        // Core APP State Manager
+        let currentService = '';
+        let captchaResult = 0;
+        let isUserLoggedIn = false;
+        let activeCooldownEndTime = null;
+        let submittedUrlsLog = new Set();
+
+        // Statistical Mock Objects
+        let clientStats = {
+            totalOrders: 0,
+            completedOrders: 0,
+            pendingOrders: 0
+        };
+
+        // Initialize App UI Elements
+        window.onload = function() {
+            generateCaptcha();
+            initMockChart();
+            startLiveStatsCounter();
+            renderLiveFeed();
+            checkAndRestoreCooldown();
+        };
+
+        // SPA Navigation Router Component
+        function navigateTo(pageId) {
+            document.querySelectorAll('.spa-page').forEach(page => page.classList.remove('active'));
+            const activePage = document.getElementById(`page-${pageId}`);
+            if(activePage) {
+                activePage.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Service Selector Controller
+        function selectService(serviceType) {
+            document.querySelectorAll('.service-card').forEach(card => {
+                card.classList.remove('border-[#fe2c55]', 'border-[#25f4ee]', 'border-purple-500', 'border-yellow-500', 'bg-white/5');
+            });
+            currentService = serviceType;
+            const targetCard = document.getElementById(`srv-${serviceType}`);
+            
+            if(serviceType === 'followers') targetCard.classList.add('border-purple-500', 'bg-white/5');
+            if(serviceType === 'likes') targetCard.classList.add('border-[#fe2c55]', 'bg-white/5');
+            if(serviceType === 'views') targetCard.classList.add('border-[#25f4ee]', 'bg-white/5');
+            if(serviceType === 'shares') targetCard.classList.add('border-yellow-500', 'bg-white/5');
+        }
+
+        // Custom Toast Notification System
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 text-xs font-bold border transform translate-y-2 opacity-0 transition-all duration-300 glass-panel`;
+            
+            if(type === 'success') {
+                toast.classList.add('border-green-500/30', 'text-green-400');
+                toast.innerHTML = `<i class="fas fa-check-circle"></i> <span>${message}</span>`;
+            } else {
+                toast.classList.add('border-red-500/30', 'text-red-400');
+                toast.innerHTML = `<i class="fas fa-exclamation-triangle"></i> <span>${message}</span>`;
+            }
+            
+            container.appendChild(toast);
+            setTimeout(() => { toast.classList.remove('translate-y-2', 'opacity-0'); }, 10);
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-[-10px]');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        // Security Captcha Generator Engine
+        function generateCaptcha() {
+            const num1 = Math.floor(Math.random() * 9) + 1;
+            const num2 = Math.floor(Math.random() * 9) + 1;
+            captchaResult = num1 + num2;
+            document.getElementById('captcha-question').innerText = `أمنياً: كم ناتج جمع ${num1} + ${num2}؟`;
+        }
+
+        // Form Validation & URL Regex Validator
+        function handleOrderSubmit(event) {
+            event.preventDefault();
+
+            // 1. Check Global active Cooldown Restraints
+            if(activeCooldownEndTime && new Date().getTime() < activeCooldownEndTime) {
+                showToast('خطأ بالنظام: لديك طلب جاري بالفعل. يرجى الانتظار لحين انتهاء المهلة!', 'error');
+                return;
+            }
+
+            const urlInput = document.getElementById('tiktok-url').value;
+            const quantity = document.getElementById('service-quantity').value;
+            const captchaAnswer = parseInt(document.getElementById('captcha-answer').value);
+
+            // 2. TikTok Validation Rules Link Regex
+            const tiktokRegex = /^(https?:\/\/)?(www\.)?(tiktok\.com\/)/i;
+            if(!tiktokRegex.test(urlInput)) {
+                showToast('الرابط المدخل غير صالح! يرجى إدخال رابط تيك توك رسمي.', 'error');
+                return;
+            }
+
+            // 3. Duplicate Link Prevention Check
+            if(submittedUrlsLog.has(urlInput)) {
+                showToast('حماية السبام: هذا الرابط مسجل بطلب معلق حالياً، لا تكرره بالمهلة ذاتها.', 'error');
+                return;
+            }
+
+            // 4. Verification Check Service Selected
+            if(!currentService) {
+                showToast('يرجى تحديد نوع التفاعل المطلوب أولاً من البطاقات المتاحة.', 'error');
+                return;
+            }
+
+            // 5. Captcha Validation Test
+            if(captchaAnswer !== captchaResult) {
+                showToast('فشل التحقق الأمني من الكابتشا. حاول مجدداً بناتج صحيح.', 'error');
+                generateCaptcha();
+                return;
+            }
+
+            // Proceeding Execution Simulator - Success Actions Triggered
+            showToast(`جاري الاتصال بـ Node.js API... التحقق من MongoDB Cloud Node السحابي...`);
+            
+            const submitBtn = document.getElementById('btn-submit-order');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i class="fas fa-spinner animate-spin text-black"></i> جاري ضخ الدعم والتحقق الحجمي...`;
+
+            setTimeout(() => {
+                showToast(`تم التوثيق والقبول! تم إرسال طلبك المتكون من ${quantity} تفاعل بنجاح للمخدم.`);
+                
+                // Add to internal prevention registry
+                submittedUrlsLog.add(urlInput);
+                
+                // Update Local UI Real Stats counter
+                clientStats.totalOrders++;
+                clientStats.pendingOrders++;
+                updateDashboardCounters();
+
+                // Trigger 24h Lock mechanism
+                start24HourCooldown();
+
+                // Reset Wizard UI elements
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `<span>START NOW</span> <i class="fas fa-paper-plane text-xs"></i>`;
+                document.getElementById('order-form').reset();
+                generateCaptcha();
+
+                // Auto Complete action simulation after 15 seconds
+                setTimeout(() => {
+                    clientStats.pendingOrders--;
+                    clientStats.completedOrders++;
+                    updateDashboardCounters();
+                    showToast('إشعار من السيرفر: اكتمل تنفيذ طلبك الأخير على حسابك بنسبة 100%.');
+                }, 15000);
+
+            }, 25000 / 10); // Simulated delay for premium feel
+        }
+
+        // 24 Hour Countdown System Engine (Firebase Mock Synchronized)
+        function start24HourCooldown() {
+            const duration = 24 * 60 * 60 * 1000; // 24 Hours in ms
+            activeCooldownEndTime = new Date().getTime() + duration;
+            localStorage.setItem('tokboost_cooldown', activeCooldownEndTime);
+            applyCooldownUI();
+        }
+
+        function checkAndRestoreCooldown() {
+            const savedCooldown = localStorage.getItem('tokboost_cooldown');
+            if(savedCooldown) {
+                const now = new Date().getTime();
+                if(parseInt(savedCooldown) > now) {
+                    activeCooldownEndTime = parseInt(savedCooldown);
+                    applyCooldownUI();
+                }
+            }
+        }
+
+        function applyCooldownUI() {
+            const wrapper = document.getElementById('cooldown-wrapper');
+            const timerText = document.getElementById('cooldown-timer');
+            const submitBtn = document.getElementById('btn-submit-order');
+
+            wrapper.classList.remove('hidden');
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-40', 'cursor-not-allowed');
+
+            const interval = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = activeCooldownEndTime - now;
+
+                if (distance < 0) {
+                    clearInterval(interval);
+                    wrapper.classList.add('hidden');
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('opacity-40', 'cursor-not-allowed');
+                    activeCooldownEndTime = null;
+                    localStorage.removeItem('tokboost_cooldown');
+                    showToast('تم فك مهلة الـ 24 ساعة المجدولة تلقائياً، يمكنك الآن تقديم طلب جديد مجاناً!');
+                    return;
+                }
+
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                timerText.innerText = 
+                    (hours < 10 ? "0" + hours : hours) + ":" + 
+                    (minutes < 10 ? "0" + minutes : minutes) + ":" + 
+                    (seconds < 10 ? "0" + seconds : seconds);
+            }, 1000);
+        }
+
+        // Authentication State Simulated Router Actions (Firebase Mock Integration)
+        function handleAuthSimulate(event, mode) {
+            event.preventDefault();
+            isUserLoggedIn = true;
+            
+            let displayName = "مستخدم متصل";
+            if(mode === 'register') {
+                displayName = document.getElementById('reg-name').value || "عضو جديد";
+            } else {
+                displayName = "أحمد العتيبي";
+            }
+
+            document.getElementById('nav-login-btn').classList.add('hidden');
+            document.getElementById('nav-register-btn').classList.add('hidden');
+            
+            const profileArea = document.getElementById('user-profile');
+            profileArea.classList.remove('hidden');
+            document.getElementById('user-display-name').innerText = displayName;
+
+            showToast(`تمت عملية المصادقة الأمنية عبر شبكة Firebase لـ ${displayName} بنجاح!`);
+            navigateTo('home');
+        }
+
+        function logout() {
+            isUserLoggedIn = false;
+            document.getElementById('nav-login-btn').classList.remove('hidden');
+            document.getElementById('nav-register-btn').classList.remove('hidden');
+            document.getElementById('user-profile').classList.add('hidden');
+            showToast('تم تسجيل الخروج من سحابة الحماية والـ Session.');
+            navigateTo('home');
+        }
+
+        // Form Support Contact Hub
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            showToast('تم رفع الرسالة ومحتوى التذكرة بنجاح إلى فريق Node.js Support. سيتم الرد عبر بريدك خلال دقائق.');
+            event.target.reset();
+            navigateTo('home');
+        }
+
+        // Live Counter Data Dynamics Simulated
+        function startLiveStatsCounter() {
+            setInterval(() => {
+                const userDelta = Math.floor(Math.random() * 4) + 1;
+                const orderDelta = Math.floor(Math.random() * 5) + 2;
+                
+                const usersElem = document.getElementById('stat-users');
+                const ordersElem = document.getElementById('stat-orders');
+
+                if(usersElem) usersElem.innerText = (parseInt(usersElem.innerText.replace(/,/g, '')) + userDelta).toLocaleString();
+                if(ordersElem) ordersElem.innerText = (parseInt(ordersElem.innerText.replace(/,/g, '')) + orderDelta).toLocaleString();
+            }, 3000);
+        }
+
+        function updateDashboardCounters() {
+            document.getElementById('db-total-orders').innerText = clientStats.totalOrders;
+            document.getElementById('db-completed-orders').innerText = clientStats.completedOrders;
+            document.getElementById('db-pending-orders').innerText = clientStats.pendingOrders;
+        }
+
+        // Realtime Streaming Operations Simulation Display Component
+        function renderLiveFeed() {
+            const feedContainer = document.getElementById('live-orders-log');
+            if(!feedContainer) return;
+
+            const countries = ['السعودية', 'الإمارات', 'مصر', 'الكويت', 'قطر', 'العراق', 'الأردن'];
+            const services = ['زيادة متابعين VIP', 'مشاهدات فورية', 'لايكات نيون إضافية', 'حفظ ومشاركة المقطع'];
+            
+            feedContainer.innerHTML = '';
+            for(let i=0; i<5; i++) {
+                const randomCountry = countries[Math.floor(Math.random() * countries.length)];
+                const randomService = services[Math.floor(Math.random() * services.length)];
+                const randomQuantity = [500, 1000, 5000][Math.floor(Math.random() * 3)];
+
+                feedContainer.innerHTML += `
+                    <div class="flex justify-between items-center bg-white/5 p-2.5 rounded-xl border border-gray-900">
+                        <div class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-[#25f4ee]"></span>
+                            <span>مستخدم من <strong>${randomCountry}</strong></span>
+                        </div>
+                        <span class="text-gray-400 font-mono">${randomService} (+${randomQuantity})</span>
+                    </div>
+                `;
+            }
+        }
+
+        // Chart.js Configuration for Premium Dashboard
+        let myChart;
+        function initMockChart() {
+            const ctx = document.getElementById('analyticsChart').getContext('2d');
+            myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['السبت', 'الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'],
+                    datasets: [{
+                        label: 'عدد الطلبات اليومية المنفذة بالسيرفر',
+                        data: [12000, 19000, 15000, 25000, 22000, 30000, 45000],
+                        borderColor: '#fe2c55',
+                        backgroundColor: 'rgba(254, 44, 85, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#25f4ee'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#9ca3af', font: { family: 'Cairo' } } }
+                    },
+                    scales: {
+                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#9ca3af', font: { family: 'Cairo' } } },
+                        x: { grid: { display: false }, ticks: { color: '#9ca3af', font: { family: 'Cairo' } } }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
